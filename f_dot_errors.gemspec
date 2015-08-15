@@ -9,9 +9,9 @@ Gem::Specification.new do |spec|
   spec.authors       = ["yui-knk"]
   spec.email         = ["spiketeika@gmail.com"]
 
-  spec.summary       = %q{TODO: Write a short summary, because Rubygems requires one.}
-  spec.description   = %q{TODO: Write a longer description or delete this line.}
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  spec.summary       = %q{Add `f.errors(:method)` to Rails view}
+  spec.description   = %q{Add `f.errors(:method)` to Rails view}
+  spec.homepage      = "https://github.com/yui-knk/f_dot_errors"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
