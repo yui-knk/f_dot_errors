@@ -1,0 +1,5 @@
+<%= form_for(@post) do |f| %>
+  <%= f.errors(:author_name) %>
+  <%= f.errors(:body) %>
+  <%= f.errors(:updated_at) %>
+<% end %>
