@@ -1,8 +1,10 @@
 # FDotErrors
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/f_dot_errors`. To experiment with that code, run `bin/console` for an interactive prompt.
+Add `f.errors(:method)` to Rails view.
 
-TODO: Delete this and the text above, and describe your gem
+## Supported versions
+
+Rails 4.2.x
 
 ## Installation
 
@@ -22,7 +24,76 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```ruby
+# app/models/post.rb
+# sure we support ActiveRecord model
+class Post < Struct.new(:author_name, :body, :updated_at)
+  include ActiveModel::Model
+end
+
+
+# app/controllers/posts_controller.rb
+class PostsController < ApplicationController
+  def create
+    @post = Post.new(post_params)
+    if @post.save
+      respond_to do |format|
+        format.html { redirect_to posts_path }
+      end
+    else
+      respond_to do |format|
+        format.html { render :new }
+      end
+    end
+  end
+end
+```
+
+```erb
+# app/views/posts/new.html.erb
+<%= form_for(@post) do |f| %>
+  <%= f.text_field(:author_name) %>
+  <%= f.errors(:author_name) %>
+
+  <%= f.text_field(:body) %>
+  <%= f.errors(:body) %>
+<% end %>
+```
+
+If `@post` has errors about `:author_name`, `f.errors` render errors:
+
+```html
+<form class="new_post" id="new_post" action="/posts" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" />
+  <input type="text" value="" name="post[author_name]" id="post_author_name" />
+  <div class="field_with_errors">Author name can't be empty</div>
+  <input type="text" value="" name="post[boyd]" id="post_boyd" />
+</form>
+```
+
+## Configuring error wrapper
+
+By default, these proc is used:
+
+```ruby
+Proc.new { |instance, method, template|
+  msgs = instance.errors.full_messages_for(method).join("\n")
+  "<div class=\"field_with_errors\">#{msgs}</div>".html_safe
+}
+```
+
+If you would use a different proc, you can configure in your initializer.
+
+```ruby
+FDotErrors.configure do |c|
+  c.field_error_proc = Proc.new { |instance, method, template|
+
+    lis = instance.errors.full_messages_for(method).map do |msg|
+      template.content_tag(:li, msg, {class: "field_with_errors_list_item"}, false)
+    end.join("\n").html_safe
+    template.content_tag(:ul, lis, class: "field_with_errors_list")
+  }
+end
+```
 
 ## Development
 
