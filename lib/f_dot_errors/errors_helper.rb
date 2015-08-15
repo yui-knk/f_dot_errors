@@ -1,6 +1,6 @@
 module FDotErrors
   module ErrorsHelper
-    def errors(method, text = nil, options = {}, &block)
+    def errors(method)
       return unless object_has_errors?(method)
 
       FDotErrors.config.field_error_proc.call(object, method, @template)
