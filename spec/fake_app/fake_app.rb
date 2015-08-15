@@ -31,6 +31,6 @@ end
 ActionView::TestCase::TestController.append_view_path File.join(File.dirname(__FILE__), "views")
 class PostsController < ApplicationController
   def show
-    @author = Post.new
+    @post = Post.new
   end
 end
