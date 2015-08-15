@@ -29,11 +29,11 @@ HTML
       FDotErrors.configure do |c|
         c.field_error_proc = Proc.new { |instance, method, template|
 
-        lis = instance.errors.full_messages_for(method).map do |msg|
-          template.content_tag(:li, msg, {class: "field_with_errors_list_item"}, false)
-        end.join("\n").html_safe
-        template.content_tag(:ul, lis, class: "field_with_errors_list")
-      } 
+          lis = instance.errors.full_messages_for(method).map do |msg|
+            template.content_tag(:li, msg, {class: "field_with_errors_list_item"}, false)
+          end.join("\n").html_safe
+          template.content_tag(:ul, lis, class: "field_with_errors_list")
+        }
       end
     end
 
